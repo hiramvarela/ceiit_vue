@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <b-container>
       <b-row>
         <b-col></b-col>
@@ -20,14 +20,14 @@
               <b-button type="submit" variant="primary">Login</b-button>
 
             </b-form>
+            <router-link to="/register">Register</router-link>
           </b-card>
 
         </b-col>
         <b-col></b-col>
       </b-row>
-    </b-container>
-
-
+    </b-container>    
+   
   </div>
 </template>
 
