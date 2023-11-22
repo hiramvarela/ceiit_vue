@@ -6,54 +6,24 @@
             </h1>
             <ul>
                 <li>
-                    <router-link to = "dashboard/categorias">
+                    <router-link to = "/dashboard/categorias">
                         Catalogo de categorias
                     </router-link>
+
                 </li>
+                <li>
+                    <router-link to = "/dashboard/objects">
+                        Catalogo de objetos
+                    </router-link>
+                </li>
+                   
+                
             </ul>
         </b-sidebar>
         <router-view></router-view>
     </div>
 </template>
-  
-<script>
-import axios from 'axios';
-
-export default {
-    name: 'App',
-    components: {
-
-    },
-    data() {
-        return {
-            username: "",
-            pass: ""
-        }
-    },
-    methods: {
-        async login(event) {
-
-            event.preventDefault();
-            const requestBody = {
-                usrn: this.username,
-                password: this.pass
-            }
-            try {
-                const serverUrl = "https://tame-red-cockatoo-tie.cyclic.app/users/iniciar_sesion";
-                const response = await axios.post(serverUrl, requestBody);
-                console.log(response)
-                alert("Haz iniciado sesión!!")
-            } catch (error) {
-                console.log(error)
-                alert("Inicio de sesion erroneo")
-            }
-
-        }
-
-    }
-}
-</script>
-  
+ 
 <style>
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
