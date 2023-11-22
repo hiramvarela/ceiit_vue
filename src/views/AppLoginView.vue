@@ -32,6 +32,7 @@
 </template>
 
 <script>
+// import router from '@/router';
 import axios from 'axios';
 
 export default {
@@ -56,13 +57,18 @@ export default {
       try {
         const serverUrl = "https://tame-red-cockatoo-tie.cyclic.app/users/iniciar_sesion";
         const response = await axios.post(serverUrl, requestBody);
-        console.log(response)
-        alert("Haz iniciado sesión!!")
+        
+        if(response && response.data && response.data.token){
+          localStorage.setItem("token", response.data.token)
+          this.$router.push ({path : "/dashboard"})
+        }else{
+          alert("Login erroneo")
+        }
       } catch (error) {
         console.log(error)
         alert("Inicio de sesion erroneo")
       }
-
+      
     }
 
   }
