@@ -1,7 +1,7 @@
 <template>
     <div>
      <h1>
-        Vista catalogos
+        Vista Categorias
      </h1>
      
     </div>

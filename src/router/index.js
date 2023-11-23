@@ -20,6 +20,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AppRegisterView.vue')
   },
   {
+
+    path: '/addObject',
+    name: 'addObject',
+    component: () => import('../views/AppAddObjectView.vue'),
+  },
+  {
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardView,
@@ -27,7 +33,15 @@ const routes = [
       {
         path: 'categorias',
        
-        component: () => import(/* webpackChunkName: "about" */ '../views/CategoriasView.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/CategoriasView.vue'),
+
+      },
+      {
+
+        path: 'objects',
+
+
+        component: () => import('../views/ObjectsView.vue'),
       },
     ]
   },
