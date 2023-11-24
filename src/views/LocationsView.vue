@@ -4,7 +4,7 @@
       <b-row>
         <b-col></b-col>
         <b-col cols="6">
-          <b-card title="Add Object">
+          <b-card>
             <h1>Lugares</h1>
             <p>Por favor seleccione un estante</p>
             <b-form-group label="Estante:">
@@ -19,7 +19,7 @@
               <img :src="objeto.imgUrl" width="200" height="200"/>
             </div>
             <br>
-            <button @click="goBack">Back</button>
+            <router-link to="/dashboard" class="btn btn-secondary">Back</router-link>
           </b-card>
         </b-col>
         <b-col></b-col>
@@ -42,9 +42,9 @@ export default {
     }
   },
   methods: {
-    goBack() {
-      this.$router.go(-1); // Go back one step in the history
-    },
+    // goBack() {
+    //   this.$router.go(-1); // Go back one step in the history
+    // },
     
     fetchObjByLoc() {
       const token = localStorage.getItem('token');
@@ -85,6 +85,11 @@ export default {
     color: #2c3e50;
     margin-top: 60px;
   }
+  .btn-secondary {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
   </style>
   
   

@@ -6,13 +6,13 @@
             </h1>
             <ul>
                 <li>
-                    <router-link to = "/dashboard/ubi">
+                    <router-link :to = "{name: 'Estantes'}">
                         Catalogo de Estantes
                     </router-link>
 
                 </li>
                 <li>
-                    <router-link to = "/dashboard/objects">
+                    <router-link :to = "{name: 'Objetos'}">
                         Catalogo de objetos
                     </router-link>
                 </li>

@@ -50,7 +50,7 @@
                 <b-button type="submit" variant="primary">Add Object</b-button>
   
               </b-form>
-              <button @click="goBack">Back</button>
+              <router-link :to = "{name: 'Objetos'}" class="btn btn-secondary">Back</router-link>
             </b-card>
           </b-col>
           <b-col></b-col>
@@ -114,4 +114,10 @@
   }
   </script>
 
-
+<style>
+.btn-secondary {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+</style>

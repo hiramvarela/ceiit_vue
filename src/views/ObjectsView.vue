@@ -2,11 +2,8 @@
   <div>
     <b-container>
       <b-row>
-        <b-col></b-col>
         <b-col cols="6">
           <b-card title="Objects">
-            <b-button @click="fetchAllObjects" variant="primary">Fetch All Objects</b-button>
-
             <!-- Mostrar los objetos en la vista -->
             <div v-if="objects.length">
               <h2>Lista de Objetos:</h2>
@@ -18,19 +15,23 @@
                     <p>Descripción: {{ obj.descripcion }}</p>
                     <p>Cantidad: {{ obj.cantidad }}</p>
                     <img :src="obj.imgUrl" width="200" height="200">
-                    <b-icon-trash-fill @click="deleteObject(obj._id)" class="trash-icon"></b-icon-trash-fill>
+                    <b-icon-trash-fill @click="deleteObject(obj.name)" class="trash-icon"></b-icon-trash-fill>
+                    <router-link :to="{ name: 'editObject', query: { objectData: JSON.stringify(obj) } }">
+                      <b-icon-pencil></b-icon-pencil>
+                    </router-link>
                   </b-card>
                 </li>
               </ul>
             </div>
-
             <div v-else>
               <p>No se encontraron objetos.</p>
             </div>
-            <router-link to="/addObject">Agregar Objeto</router-link>
+            <br>
+            <router-link to="/addObject" class="btn btn-secondary">Agregar objeto</router-link>
+            <br>
+            <router-link to="/dashboard" class="btn btn-secondary">Back</router-link>
           </b-card>
         </b-col>
-        <b-col></b-col>
       </b-row>
     </b-container>
   </div>
@@ -45,49 +46,39 @@ export default {
       objects: [],
     };
   },
+  mounted() {
+    this.fetchAllObjects();
+  },
   methods: {
     async fetchAllObjects() {
-  try {
-    const token = localStorage.getItem('token');
-
-    // Configurar el encabezado de la solicitud con el token
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    };
-
-    // Hacer la solicitud para obtener todos los objetos
-    // Si el backend espera un cuerpo vacío, envía un objeto vacío o el cuerpo apropiado
-    const response = await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/searchObject', {}, {
-      headers: headers
-    });
-
-    // Actualizar la lista de objetos en el componente
-    this.objects = response.data;
-  } catch (error) {
-    // Manejar errores aquí
-    console.error('Error al obtener todos los objetos:', error);
-  }
-},
-
-
-    async deleteObject(objectId) {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        };
+        const response = await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/searchObject', {}, {
+          headers: headers
+        });
+        this.objects = response.data;
+      } catch (error) {
+        console.error('Error al obtener todos los objetos:', error);
+      }
+    },
+    async deleteObject(name) {
       try {
         const token = localStorage.getItem('token');
         const headers = {
           Authorization: `Bearer ${token}`,
         };
         const requestBody = {
-          ob: objectId,
+          ob: name,
         };
-
         await axios.delete('https://tame-red-cockatoo-tie.cyclic.app/ulsa/deleteObject', { headers, data: requestBody });
         alert('Objeto borrado con éxito!');
-
-        // Fetch all objects again after deletion
+        // Después de borrar el objeto, forzamos una actualización de la vista
         this.fetchAllObjects();
       } catch (error) {
-        // Handle errors here
         console.error('Error al borrar objeto:', error);
       }
     },
@@ -101,7 +92,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background-image: url('https://www.ctifimpes.ulsachihuahua.edu.mx/images/urbanika_ulsa_1.jpg'); 
+  background-image: url('https://www.ctifimpes.ulsachihuahua.edu.mx/images/urbanika_ulsa_1.jpg');
   color: #2c3e50;
   margin-top: 60px;
 }
@@ -111,5 +102,19 @@ export default {
   color: red;
   font-size: 1.5rem;
   margin-left: 10px;
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.edit-icon {
+  cursor: pointer;
+  color: green;
+  font-size: 1.35rem;
+  margin-left: 10px;
+  margin-right: 20px;
 }
 </style>
