@@ -6,8 +6,8 @@
             </h1>
             <ul>
                 <li>
-                    <router-link to = "/dashboard/categorias">
-                        Catalogo de categorias
+                    <router-link to = "/dashboard/ubi">
+                        Catalogo de Estantes
                     </router-link>
 
                 </li>
@@ -28,6 +28,7 @@
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
+    background-image: url('https://www.ctifimpes.ulsachihuahua.edu.mx/images/urbanika_ulsa_1.jpg'); 
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;

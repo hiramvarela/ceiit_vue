@@ -47,24 +47,29 @@ export default {
   },
   methods: {
     async fetchAllObjects() {
-      try {
-        const token = localStorage.getItem('token');
+  try {
+    const token = localStorage.getItem('token');
 
-        // Configurar el encabezado de la solicitud con el token
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
+    // Configurar el encabezado de la solicitud con el token
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
 
-        // Hacer la solicitud para obtener todos los objetos
-        const response = await axios.get('https://tame-red-cockatoo-tie.cyclic.app/ulsa/searchObject', { headers });
+    // Hacer la solicitud para obtener todos los objetos
+    // Si el backend espera un cuerpo vacío, envía un objeto vacío o el cuerpo apropiado
+    const response = await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/searchObject', {}, {
+      headers: headers
+    });
 
-        // Actualizar la lista de objetos en el componente
-        this.objects = response.data;
-      } catch (error) {
-        // Manejar errores aquí
-        console.error('Error al obtener todos los objetos:', error);
-      }
-    },
+    // Actualizar la lista de objetos en el componente
+    this.objects = response.data;
+  } catch (error) {
+    // Manejar errores aquí
+    console.error('Error al obtener todos los objetos:', error);
+  }
+},
+
 
     async deleteObject(objectId) {
       try {
@@ -96,6 +101,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background-image: url('https://www.ctifimpes.ulsachihuahua.edu.mx/images/urbanika_ulsa_1.jpg'); 
   color: #2c3e50;
   margin-top: 60px;
 }

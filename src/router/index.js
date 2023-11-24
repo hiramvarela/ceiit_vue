@@ -31,9 +31,9 @@ const routes = [
     component: DashboardView,
     children:[
       {
-        path: 'categorias',
+        path: 'ubi',
        
-        component: () => import(/* webpackChunkName: "about" */ '../views/CategoriasView.vue'),
+        component: () => import(/* webpackChunkName: "about" */ '../views/LocationsView.vue'),
 
       },
       {
