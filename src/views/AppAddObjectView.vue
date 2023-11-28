@@ -1,17 +1,12 @@
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-image: url('https://www.ctifimpes.ulsachihuahua.edu.mx/images/urbanika_ulsa_1.jpg'); 
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
-
 <template>
     <div>
+      <div class="menu-container">
+            <b-nav>
+                <b-nav-item-dropdown text="Perfil" right>
+                    <b-dropdown-item @click="logout">Cerrar Sesión</b-dropdown-item>
+                </b-nav-item-dropdown>
+            </b-nav>
+        </div>
       <b-container>
         <b-row>
           <b-col></b-col>
@@ -109,15 +104,36 @@
           console.log(error)
           alert("Error al agregar objeto")
         }
-      }
+      },
+      logout() {
+            localStorage.removeItem('token');
+            this.$router.push('/login');
+        }
     }
   }
   </script>
 
 <style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: url('https://www.ctifimpes.ulsachihuahua.edu.mx/images/urbanika_ulsa_1.jpg'); 
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 .btn-secondary {
   color: #fff;
   background-color: #6c757d;
   border-color: #6c757d;
+}
+.menu-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    padding: 10px;
+    background-color: white;
 }
 </style>

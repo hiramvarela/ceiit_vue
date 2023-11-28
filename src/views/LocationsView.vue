@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="menu-container">
+      <b-nav>
+        <b-nav-item-dropdown text="Perfil" right>
+          <b-dropdown-item @click="logout">Cerrar Sesión</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-nav>
+    </div>
     <b-container>
       <b-row>
         <b-col></b-col>
@@ -11,13 +18,21 @@
               <b-form-select v-model="ubi" :options="ubicaciones" required></b-form-select>
             </b-form-group>
             <b-button @click="fetchObjByLoc" variant="primary">Buscar</b-button>
-            <div v-for="(objeto, index) in fetchedObjs" :key="index">
-              <h3>{{ objeto.name }}</h3>
-              <p>Serial: {{ objeto.numserial }}</p>
-              <p>Descripción: {{ objeto.descripcion }}</p>
-                    <p>Cantidad: {{ objeto.cantidad }}</p>
-              <img :src="objeto.imgUrl" width="200" height="200"/>
+            
+            <div v-if="fetchedObjs.length">
+              <div v-for="(objeto, index) in fetchedObjs" :key="index">
+                <h3>{{ objeto.name }}</h3>
+                <p>Serial: {{ objeto.numserial }}</p>
+                <p>Descripción: {{ objeto.descripcion }}</p>
+                <p>Cantidad: {{ objeto.cantidad }}</p>
+                <img :src="objeto.imgUrl" width="200" height="200"/>
+              </div>
             </div>
+            <div v-else class="empty-state">
+              <img src="https://res.cloudinary.com/dzfglb0m4/image/upload/v1701209794/35f48d50910679.58dcde64b9214_meq4l3.png" alt="No hay objetos en este estante" class="empty-state-image">
+              <p>No se encontraron objetos en este estante.</p>
+            </div>
+
             <br>
             <router-link to="/dashboard" class="btn btn-secondary">Back</router-link>
           </b-card>
@@ -27,6 +42,7 @@
     </b-container>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -42,10 +58,6 @@ export default {
     }
   },
   methods: {
-    // goBack() {
-    //   this.$router.go(-1); // Go back one step in the history
-    // },
-    
     fetchObjByLoc() {
       const token = localStorage.getItem('token');
       const headers = {
@@ -67,15 +79,16 @@ export default {
       .catch(error => {
         console.error("Error al realizar la petición: ", error);
       });
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.$router.push('/login');
     }
   }
 }
 </script>
 
-  
-  
-
-  <style>
+<style>
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     background-image: url('https://www.ctifimpes.ulsachihuahua.edu.mx/images/urbanika_ulsa_1.jpg'); 
@@ -86,11 +99,28 @@ export default {
     margin-top: 60px;
   }
   .btn-secondary {
-  color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-  </style>
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+  .menu-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    padding: 10px;
+    background-color: white;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 20px;
+  }
+  .empty-state-image {
+    width: 250px; 
+    margin-bottom: 20px;
+  }
+</style>
+
   
   
   

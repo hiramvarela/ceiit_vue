@@ -1,5 +1,12 @@
 <template>
     <div>
+        <div class="menu-container">
+            <b-nav>
+                <b-nav-item-dropdown text="Perfil" right>
+                    <b-dropdown-item @click="logout">Cerrar Sesión</b-dropdown-item>
+                </b-nav-item-dropdown>
+            </b-nav>
+        </div>
         <b-container>
             <b-row>
                 <b-col cols="6">
@@ -9,25 +16,18 @@
                             <b-form-group label="Nombre:">
                                 <b-form-input v-model="editableObject.name" required></b-form-input>
                             </b-form-group>
-
                             <b-form-group label="Número Serial:">
                                 <b-form-input v-model="editableObject.numserial" required></b-form-input>
                             </b-form-group>
-
                             <b-form-group label="Ubicación:">
                                 <b-form-select v-model="editableObject.ubicacion" :options="ubicaciones"></b-form-select>
                             </b-form-group>
-
                             <b-form-group label="Descripción:">
                                 <b-form-textarea v-model="editableObject.descripcion" rows="3"></b-form-textarea>
                             </b-form-group>
-
                             <b-form-group label="Cantidad:">
                                 <b-form-input v-model="editableObject.cantidad" type="number" required></b-form-input>
                             </b-form-group>
-
-                            
-
                             <b-button type="submit" variant="primary">Guardar Cambios</b-button>
                         </b-form>
                     </b-card>
@@ -36,14 +36,11 @@
         </b-container>
     </div>
 </template>
-  
+
 <script>
 import axios from 'axios';
 
 export default {
-    props: {
-        // Elimina la propiedad objectData aquí, ya que no es necesaria
-    },
     data() {
         return {
             editableObject: {
@@ -64,26 +61,35 @@ export default {
                 const headers = {
                     Authorization: `Bearer ${token}`,
                 };
-                const requestBody = this.editableObject;
-                // Asegúrate de que la URL sea la correcta y coincida con tu servidor
-                const response = await axios.put('https://tame-red-cockatoo-tie.cyclic.app/ulsa/updateObject', requestBody, {headers});
+                const requestBody = {
+                    ob: this.editableObject.name,
+                    num: this.editableObject.numserial,
+                    ubi: this.editableObject.ubicacion,
+                    des: this.editableObject.descripcion,
+                    cant: this.editableObject.cantidad,
+                };
+                const response = await axios.put('https://tame-red-cockatoo-tie.cyclic.app/ulsa/updateObject', requestBody, { headers });
                 console.log(response);
                 alert("Objeto actualizado con éxito!");
-                
                 this.$router.push({ name: 'Objetos' });
             } catch (error) {
                 console.error("Error al actualizar el objeto:", error);
                 alert("Error al actualizar el objeto");
             }
+        },
+        logout() {
+            localStorage.removeItem('token');
+            this.$router.push('/login');
         }
     },
     created() {
-        // Decodifica el objeto JSON pasado como query
         const objectDataString = this.$route.query.objectData;
         if (objectDataString) {
             this.editableObject = JSON.parse(objectDataString);
         }
-    }
+    },
+
+
 };
 </script>
   
@@ -92,5 +98,14 @@ export default {
     color: #fff;
     background-color: #6c757d;
     border-color: #6c757d;
+}
+
+.menu-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    padding: 10px;
+    background-color: white;
 }
 </style>
