@@ -1,48 +1,38 @@
 <template>
   <div>
     <div class="menu-container">
-      <b-nav>
-        <b-nav-item-dropdown text="Perfil" right>
-          <b-dropdown-item @click="logout">Cerrar Sesión</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-nav>
+      <!-- Navegación y otros elementos del menú... -->
     </div>
     <b-container>
       <b-row>
-        <b-col></b-col>
-        <b-col cols="6">
+        <b-col cols="12">
           <b-card>
-            <h1>Lugares</h1>
-            <p>Por favor seleccione un estante</p>
-            <b-form-group label="Estante:">
-              <b-form-select v-model="ubi" :options="ubicaciones" required></b-form-select>
+            <h1 class="text-center">Lugares</h1>
+            <p class="text-center">Por favor seleccione un estante</p>
+            <b-form-group label="Estante:" label-cols-sm="4" label-align-sm="right" label-for="ubi-select">
+              <b-form-select id="ubi-select" v-model="ubi" :options="ubicaciones" required></b-form-select>
             </b-form-group>
             <b-button @click="fetchObjByLoc" variant="primary">Buscar</b-button>
-            
+
             <div v-if="fetchedObjs.length">
-              <div v-for="(objeto, index) in fetchedObjs" :key="index">
-                <h3>{{ objeto.name }}</h3>
-                <p>Serial: {{ objeto.numserial }}</p>
-                <p>Descripción: {{ objeto.descripcion }}</p>
-                <p>Cantidad: {{ objeto.cantidad }}</p>
-                <img :src="objeto.imgUrl" width="200" height="200"/>
-              </div>
+              <b-table striped hover :items="fetchedObjs" :fields="fields">
+                <template v-slot:cell(image)="data">
+                  <img :src="data.item.imgUrl" width="150" height="150" alt="Imagen del objeto">
+                </template>
+              </b-table>
             </div>
             <div v-else class="empty-state">
               <img src="https://res.cloudinary.com/dzfglb0m4/image/upload/v1701209794/35f48d50910679.58dcde64b9214_meq4l3.png" alt="No hay objetos en este estante" class="empty-state-image">
               <p>No se encontraron objetos en este estante.</p>
             </div>
 
-            <br>
             <router-link to="/dashboard" class="btn btn-secondary">Back</router-link>
           </b-card>
         </b-col>
-        <b-col></b-col>
       </b-row>
     </b-container>
   </div>
 </template>
-
 
 <script>
 import axios from 'axios';
@@ -54,7 +44,14 @@ export default {
     return {      
       ubicaciones: ['Estante 1', 'Estante 2', 'Estante 3', 'Estante 4', 'Estante 5'],
       ubi: '',
-      fetchedObjs: [] // Almacenará los objetos obtenidos de la petición
+      fetchedObjs: [],
+      fields: [
+        { key: 'name', label: 'Nombre' },
+        { key: 'numserial', label: 'Serial' },
+        { key: 'descripcion', label: 'Descripción' },
+        { key: 'cantidad', label: 'Cantidad' },
+        { key: 'image', label: 'Imagen' }
+      ], 
     }
   },
   methods: {

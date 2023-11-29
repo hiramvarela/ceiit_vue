@@ -9,34 +9,44 @@
       </b-nav>
     </div>
 
-
     <b-container>
       <b-row>
-        <b-col cols="6">
-          <b-card title="Objects">
+        <b-col cols="12">
 
+          <b-card title="Lista de Objetos:">
             <div v-if="objects.length">
-              <h2>Lista de Objetos:</h2>
-              <ul>
-                <li v-for="obj in objects" :key="obj._id">
-                  <b-card :title="obj.name">
-                    <p>Serial: {{ obj.numserial }}</p>
-                    <p>Ubicación: {{ obj.ubicacion }}</p>
-                    <p>Descripción: {{ obj.descripcion }}</p>
-                    <p>Cantidad: {{ obj.cantidad }}</p>
-                    <img :src="obj.imgUrl" width="200" height="200">
-                    <b-icon-trash-fill @click="deleteObject(obj.name)" class="trash-icon"></b-icon-trash-fill>
-                    <router-link :to="{ name: 'editObject', query: { objectData: JSON.stringify(obj) } }">
-                      <b-icon-pencil></b-icon-pencil>
-                    </router-link>
-                  </b-card>
-                </li>
-              </ul>
+              
+              <b-table striped hover :items="objects" :fields="fields">
+                <template v-slot:cell(name)="data">
+                  {{ data.item.name }}
+                </template>
+                <template v-slot:cell(numserial)="data">
+                  {{ data.item.numserial }}
+                </template>
+                <template v-slot:cell(ubicacion)="data">
+                  {{ data.item.ubicacion }}
+                </template>
+                <template v-slot:cell(descripcion)="data">
+                  {{ data.item.descripcion }}
+                </template>
+                <template v-slot:cell(cantidad)="data">
+                  {{ data.item.cantidad }}
+                </template>
+                <template v-slot:cell(imgUrl)="data">
+                  <img :src="data.item.imgUrl" width="150" height="150">
+                </template>
+                <template v-slot:cell(buttons)="data">
+                  <b-icon-trash-fill @click="deleteObject(data.item.name)" class="trash-icon"></b-icon-trash-fill>
+                  <router-link :to="{ name: 'editObject', query: { objectData: JSON.stringify(data.item) } }">
+                    <b-icon-pencil></b-icon-pencil>
+                  </router-link>
+                </template>
+              </b-table>
+
             </div>
             <div v-else class="empty-state">
               <img src="https://res.cloudinary.com/dzfglb0m4/image/upload/v1701209794/35f48d50910679.58dcde64b9214_meq4l3.png" alt="No hay objetos" class="empty-state-image">
-              <p>No se encontraron objetos. <router-link to="/addObject">Agregar un nuevo objeto</router-link> para
-                comenzar.</p>
+              <p>No se encontraron objetos. <router-link to="/addObject">Agregar un nuevo objeto</router-link> para comenzar.</p>
             </div>
             <br>
             <router-link to="/addObject" class="btn btn-secondary">Agregar objeto</router-link>
@@ -49,6 +59,7 @@
   </div>
 </template>
 
+
 <script>
 import axios from 'axios';
 
@@ -56,6 +67,15 @@ export default {
   data() {
     return {
       objects: [],
+      fields: [
+        { key: 'name', label: 'Nombre' },
+        { key: 'numserial', label: 'Serial' },
+        { key: 'ubicacion', label: 'Ubicación' },
+        { key: 'descripcion', label: 'Descripción' },
+        { key: 'cantidad', label: 'Cantidad' },
+        { key: 'imgUrl', label: 'Imagenes' },
+        { key: 'buttons', label: '' }
+      ],
     };
   },
   mounted() {
@@ -104,6 +124,7 @@ export default {
   cursor: pointer;
   color: red;
   font-size: 1.5rem;
+  margin-bottom: 10px;
   margin-left: 10px;
 }
 
@@ -117,8 +138,9 @@ export default {
   cursor: pointer;
   color: green;
   font-size: 1.35rem;
+  margin-top: 20px;
   margin-left: 10px;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .menu-container {
