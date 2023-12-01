@@ -22,6 +22,16 @@ const routes = [
     component: () => import('../views/AppAddObjectView.vue'),
   },
   {
+    path: '/addLocation',
+    name: 'addLocation',
+    component: () => import('../views/AppAddLocationView.vue'),
+  },
+  {
+    path: '/editLocation',
+    name: 'editLocation',
+    component: () => import('../views/AppEditLocationView.vue'),
+  },
+  {
     path: '/editObject',
     name: 'editObject',
     component: () => import('../views/AppEditObjectView.vue'),
