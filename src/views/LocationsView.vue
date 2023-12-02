@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       ubicaciones: [],
-      ubi: [],
+      ubi: null,
       fetchedObjs: [],
       fields: [
         { key: "name", label: "Nombre" },
@@ -93,34 +93,23 @@ export default {
           console.error("Error al realizar la petición: ", error);
         });
     },
-    readLocation() {
-      const token = localStorage.getItem("token");
-      const headers = {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": `Bearer ${token}`
-      };
-      const data = qs.stringify({
-        
-      });
-      axios.get("https://tame-red-cockatoo-tie.cyclic.app/ulsa/readLocation", data,{
-        headers: headers
-      })
-        .then(response => {
-          if (response.data && response.data.obj) {
-            this.ubicaciones = response.data;
-          } else {
-            console.error("No se recibieron datos válidos: ", response.data);
-          }
-        })
-        .catch(error => {
-          console.error("Error al realizar la petición: ", error);
-        });
-    },
-    editObject() {
-      if (this.ubi) {
-        this.$router.push({ name: "editLocation", query: { locationData: JSON.stringify({ ubicacion: this.ubi }) } });
-      }
-    },
+    async readLocation() {
+  try {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
+    const response = await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/readLocation', {}, { headers });
+    
+    // Transformar los datos para el b-form-select
+    this.ubicaciones = response.data.map(location => {
+      return { text: location.ubicacion, value: location.ubicacion };
+    });
+  } catch (error) {
+    console.error('Error al obtener todos los objetos:', error);
+  }
+},
     logout() {
       localStorage.removeItem("token");
       this.$router.push("/login");

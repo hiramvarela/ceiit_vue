@@ -15,7 +15,7 @@
 
           <b-card title="Lista de Objetos:">
             <div v-if="objects.length">
-              
+
               <b-table striped hover :items="objects" :fields="fields">
                 <template v-slot:cell(name)="data">
                   {{ data.item.name }}
@@ -45,8 +45,11 @@
 
             </div>
             <div v-else class="empty-state">
-              <img src="https://res.cloudinary.com/dzfglb0m4/image/upload/v1701209794/35f48d50910679.58dcde64b9214_meq4l3.png" alt="No hay objetos" class="empty-state-image">
-              <p>No se encontraron objetos. <router-link to="/addObject">Agregar un nuevo objeto</router-link> para comenzar.</p>
+              <img
+                src="https://res.cloudinary.com/dzfglb0m4/image/upload/v1701209794/35f48d50910679.58dcde64b9214_meq4l3.png"
+                alt="No hay objetos" class="empty-state-image">
+              <p>No se encontraron objetos. <router-link to="/addObject">Agregar un nuevo objeto</router-link> para
+                comenzar.</p>
             </div>
             <br>
             <router-link to="/addObject" class="btn btn-secondary">Agregar objeto</router-link>
@@ -111,6 +114,23 @@ export default {
         console.error('Error al borrar objeto:', error);
       }
     },
+    async readLocation() {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        };
+        const response = await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/readLocation', {}, { headers });
+
+        // Transformar los datos para el b-form-select
+        this.ubicaciones = response.data.map(location => {
+          return { text: location.ubicacion, value: location._id }; // Cambia 'value' para que sea el ObjectId
+        });
+      } catch (error) {
+        console.error('Error al obtener todos los objetos:', error);
+      }
+    },
     logout() {
       localStorage.removeItem('token');
       this.$router.push('/login');
@@ -151,6 +171,7 @@ export default {
   padding: 10px;
   background-color: white;
 }
+
 .empty-state {
   text-align: center;
   padding: 20px;
