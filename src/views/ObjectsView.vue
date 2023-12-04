@@ -24,7 +24,7 @@
                   {{ data.item.numserial }}
                 </template>
                 <template v-slot:cell(ubicacion)="data">
-                  {{ data.item.ubicacion }}
+                  {{ data.item.ubicacion ? data.item.ubicacion.ubicacion : "N/a" }}
                 </template>
                 <template v-slot:cell(descripcion)="data">
                   {{ data.item.descripcion }}
@@ -84,6 +84,9 @@ export default {
   mounted() {
     this.fetchAllObjects();
   },
+  async created() {
+      await this.fetchProducts();
+    },
   methods: {
     async fetchAllObjects() {
       try {

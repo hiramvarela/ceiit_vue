@@ -29,7 +29,7 @@ export default {
     data() {
         return {
             editableLocation: {
-                
+                id: '',
                 ubicacion: '',
             }
         };
@@ -42,8 +42,9 @@ export default {
                     Authorization: `Bearer ${token}`,
                 };
                 const requestBody = {
-                     // Enviar la ubicación original
-                    ubi: this.editableLocation.ubicacion, // Nueva ubicación
+                    
+                    id: this.editableLocation.id, 
+                    ubi: this.editableLocation.ubicacion, 
                 };
                 const response = await axios.put('https://tame-red-cockatoo-tie.cyclic.app/ulsa/updateLocation', requestBody, { headers });
                 console.log(response);
@@ -62,11 +63,14 @@ export default {
             this.$router.push({ name: 'editLocation', query: { locationData: JSON.stringify(item) } });
         }
     },
-    
+
     created() {
+
         const objectDataString = this.$route.query.locationData;
         if (objectDataString) {
-            this.editableLocation = JSON.parse(objectDataString);
+            const estanteData = JSON.parse(objectDataString);
+
+            this.editableLocation = estanteData;
         }
     }
 
