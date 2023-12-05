@@ -84,9 +84,9 @@ export default {
   mounted() {
     this.fetchAllObjects();
   },
-  async created() {
-      await this.fetchProducts();
-    },
+  /*async created() {
+    await this.fetchProducts();
+  }*/
   methods: {
     async fetchAllObjects() {
       try {
@@ -106,17 +106,20 @@ export default {
         const token = localStorage.getItem('token');
         const headers = {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json', // Asegúrate de enviar el contenido como JSON
         };
-        const requestBody = {
+        // Usar axios.post y enviar los datos en el cuerpo de la solicitud
+        await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/deleteObject', {
           ob: name,
-        };
-        await axios.delete('https://tame-red-cockatoo-tie.cyclic.app/ulsa/deleteObject', { headers, data: requestBody });
+        }, { headers: headers });
+
         alert('Objeto borrado con éxito!');
         this.fetchAllObjects();
       } catch (error) {
         console.error('Error al borrar objeto:', error);
       }
     },
+
     async readLocation() {
       try {
         const token = localStorage.getItem('token');
