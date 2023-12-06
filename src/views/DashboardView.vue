@@ -24,6 +24,12 @@
                         Catalogo de objetos
                     </router-link>
                 </li>
+                <li>
+                    <router-link :to="{ name: 'Loans' }">
+                        Make Loan
+                    </router-link>
+
+                </li>
 
 
             </ul>
