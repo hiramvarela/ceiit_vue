@@ -37,6 +37,11 @@ const routes = [
     component: () => import('../views/AppEditObjectView.vue'),
   },
   {
+  path: '/addUser',
+  name: 'addUser',
+  component: () => import('../views/AppSearchUserView.vue'),
+},
+  {
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardView,
@@ -50,6 +55,11 @@ const routes = [
         path: 'objects',
         name: 'Objetos',
         component: () => import('../views/ObjectsView.vue'),
+      },
+      {
+        path: 'loan',
+        name: 'Loans',
+        component: () => import(/* webpackChunkName: "about" */ '../views/MakeLoanView.vue'),
       },
     ]
   },
