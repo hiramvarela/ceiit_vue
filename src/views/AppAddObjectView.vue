@@ -37,7 +37,7 @@
                 <b-form-input v-model="cant" type="number" placeholder="Enter Quantity available" required>
                 </b-form-input>
               </b-form-group>
-
+              
               <b-form-group label="Image Url:">
                 <b-form-input v-model="img" placeholder="Paste Image URL" required>
                 </b-form-input>
@@ -69,7 +69,7 @@ export default {
       ubi: null,
       desc: '',
       cant: '',
-      stat: false,
+      stat: true,
       qrCode: 'testQR',
       img: '',
       ubicaciones: [],
@@ -96,6 +96,7 @@ export default {
         ubi: this.ubi, // Aquí se usa el ObjectId seleccionado directamente
         des: this.desc,
         cant: this.cant,
+        esta: this.stat,
         img: this.img
       };
 
