@@ -11,7 +11,7 @@
             <p class="text-center">Por favor seleccione un estante</p>
             <b-form-group label="Estante:" label-cols-sm="4" label-align-sm="right" label-for="ubi-select">
               <b-form-select id="ubi-select" v-model="ubi" :options="ubicaciones" required
-                @change="readLocation"></b-form-select>
+                @change="onLocationChange"></b-form-select>
             </b-form-group>
             <b-button @click="fetchObjByLoc" variant="primary">Buscar</b-button>
 
@@ -32,8 +32,19 @@
             <router-link :to="{ name: 'addLocation' }" class="btn btn-secondary">Add Location</router-link>
             <br>
             <br>
-            <router-link :to="{ name: 'editLocation', query: { locationData: JSON.stringify({ ubicacion: ubi }) } }"
-              tag="button" class="btn btn-secondary">Editar Estante</router-link>
+            <router-link :to="{
+              name: 'editLocation',
+              params: { id: selectedLocationId },
+              query: { locationData: JSON.stringify({ _id: selectedLocationId, ubicacion: selectedLocationName }) }
+            }" tag="button" class="btn btn-secondary">Editar Estante
+            </router-link>
+
+
+
+
+
+
+
 
             <br>
             <router-link to="/dashboard" class="btn btn-secondary">Back</router-link>
@@ -56,6 +67,8 @@ export default {
       ubicaciones: [],
       ubi: null,
       fetchedObjs: [],
+      selectedLocationId: null,
+      selectedLocationName: '',
       fields: [
         { key: "name", label: "Nombre" },
         { key: "numserial", label: "Serial" },
@@ -72,6 +85,11 @@ export default {
   },
 
   methods: {
+    onLocationChange(value) {
+      const selectedLocation = this.ubicaciones.find(loc => loc.value === value);
+      this.selectedLocationId = selectedLocation ? selectedLocation.value : null;
+      this.selectedLocationName = selectedLocation ? selectedLocation.text : '';
+    },
     fetchObjByLoc() {
       const token = localStorage.getItem("token");
       const headers = {
@@ -94,22 +112,22 @@ export default {
         });
     },
     async readLocation() {
-  try {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    };
-    const response = await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/readLocation', {}, { headers });
-    
-    // Transformar los datos para el b-form-select
-    this.ubicaciones = response.data.map(location => {
-      return { text: location.ubicacion, value: location.ubicacion };
-    });
-  } catch (error) {
-    console.error('Error al obtener todos los objetos:', error);
-  }
-},
+      try {
+        const token = localStorage.getItem('token');
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        };
+        const response = await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/readLocation', {}, { headers });
+
+        // Transformar los datos para el b-form-select
+        this.ubicaciones = response.data.map(location => {
+          return { text: location.ubicacion, value: location._id }; // Asegúrate de que el value sea el _id, no la ubicación
+        });
+      } catch (error) {
+        console.error('Error al obtener todos los objetos:', error);
+      }
+    },
     logout() {
       localStorage.removeItem("token");
       this.$router.push("/login");

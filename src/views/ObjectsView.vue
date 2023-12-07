@@ -1,5 +1,7 @@
 <template>
-  <div>
+ <div>
+    <!-- Imagen de fondo fija -->
+    
 
     <div class="menu-container">
       <b-nav>
@@ -8,7 +10,7 @@
         </b-nav-item-dropdown>
       </b-nav>
     </div>
-
+    <div class="table-container">
     <b-container>
       <b-row>
         <b-col cols="12">
@@ -60,6 +62,7 @@
       </b-row>
     </b-container>
   </div>
+</div>
 </template>
 
 
@@ -155,14 +158,40 @@ export default {
 }
 
 .btn-secondary {
-  color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
+  background-color: #aed6f1; /* Un color azul más suave para el botón */
+  border-color: #aed6f1;
 }
-
+.background-image {
+  position: fixed; /* Fija la posición de la imagen de fondo */
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1; /* Asegura que la imagen esté detrás de todo el contenido */
+}
+.table-container {
+  position: relative; /* Posición relativa para que la tabla pueda deslizarse sobre la imagen */
+  z-index: 2; /* Asegura que la tabla esté sobre la imagen de fondo */
+}
+.b-table {
+  font-size: 1.25em; /* Aumenta el tamaño de la letra */
+  color: #333; /* Color de letra más oscuro para mayor contraste */
+  --bs-table-bg: #e7f3fe; /* Fondo azul claro para la tabla */
+  --bs-table-striped-bg: #f2d7d9; /* Fondo rojo claro para las filas alternas */
+  --bs-table-striped-color: #333; /* Color de texto para las filas alternas */
+  --bs-table-hover-bg: #d6eaf8; /* Fondo azul al pasar el mouse */
+  --bs-table-hover-color: #333; /* Color de texto al pasar el mouse */
+  --bs-table-active-bg: #d1f2eb; /* Fondo azul al seleccionar */
+  --bs-table-active-color: #333; /* Color de texto al seleccionar */
+}
+.trash-icon, .edit-icon {
+  cursor: pointer;
+  color: #3498db; /* Color azul para los íconos */
+  margin-right: 10px;
+}
 .edit-icon {
   cursor: pointer;
-  color: green;
+  color: #f1c40f;
   font-size: 1.35rem;
   margin-top: 20px;
   margin-left: 10px;
