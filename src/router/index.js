@@ -42,7 +42,7 @@ const routes = [
     component: () => import('../views/AppEditObjectView.vue'),
   },
   {
-  path: '/addUser',
+  path: '/addUser:id',
   name: 'addUser',
   component: () => import('../views/AppSearchUserView.vue'),
 },

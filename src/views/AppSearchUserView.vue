@@ -1,105 +1,103 @@
 <template>
-    <div>
-      <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" v-model="searchParams.name" />
-      </div>
-      <div>
-        <label for="surname">Surname:</label>
-        <input type="text" id="surname" v-model="searchParams.surname" />
-      </div>
-      <div>
-        <label for="tuition">Tuition:</label>
-        <input type="text" id="tuition" v-model="searchParams.tuition" />
-      </div>
-      <div>
-        <button @click="searchUsers">Search</button>
-      </div>
-      <div v-if="error" class="error">{{ error }}</div>
-      <table v-if="users.length > 0">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Tuition</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(user, index) in users" :key="index">
-            <td>{{ user.name }}</td>
-            <td>{{ user.surname }}</td>
-            <td>{{ user.tuition }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-else-if="searchPerformed">No users found.</div>
+  <div>
+    <div class="menu-container">
+      <b-nav>
+        <b-nav-item-dropdown text="Perfil" right>
+          <b-dropdown-item @click="logout">Cerrar Sesión</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-nav>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        searchParams: {
-          name: '',
-          surname: '',
-          tuition: ''
-        },
-        users: [],
-        error: '',
-        searchPerformed: false
+    <b-container>
+      <b-row>
+        <b-col></b-col>
+        <b-col cols="6">
+          <b-card title="Search user">
+            <b-form @submit.prevent="searchUsers">
+              <b-form-group label="Matricula:">
+                <b-form-input v-model="tuition" placeholder="Enter tuition" required></b-form-input>
+              </b-form-group>
+              <b-button type="submit" variant="primary">Buscar usuario</b-button>
+            </b-form>
+            <div v-if="fetchedTuition.length">
+              <b-table striped hover :items="fetchedTuition" :fields="tuitionFields"></b-table>
+            </div>
+            <div v-if="objectDetails.name">
+              <h3>Detalles del Objeto Seleccionado:</h3>
+              <b-table striped hover :items="[objectDetails]" :fields="objectFields">
+                <template v-slot:cell(imgUrl)="data">
+                  <img :src="data.value" alt="Object Image" style="width: 60px; height: 60px;">
+                </template>
+              </b-table>
+            </div>
+          </b-card>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+    </b-container>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      tuition: '',
+      fetchedTuition: [],
+      objectDetails: {
+        name: '',
+        descripcion: '',
+        imgUrl: ''
+      },
+      tuitionFields: [
+        { key: 'name', label: 'Nombre' },
+        { key: 'surname', label: 'Apellido' },
+        { key: 'tuition', label: 'Matricula' },
+      ],
+      objectFields: [
+        { key: 'name', label: 'Nombre' },
+        { key: 'descripcion', label: 'Descripción' },
+        { key: 'imgUrl', label: 'Imagen' },
+      ],
+    };
+  },
+  created() {
+    // Asignar los datos del objeto a objectDetails basado en la URL
+    this.objectDetails.name = this.$route.query.name || '';
+    this.objectDetails.descripcion = this.$route.query.descripcion || '';
+    this.objectDetails.imgUrl = this.$route.query.imgUrl || '';
+  },
+  methods: {
+    async searchUsers() {
+      const requestBody = {
+        tuition: this.tuition
       };
-    },
-    methods: {
-      async searchUsers() {
-        // Validate that only one search parameter is provided
-        const providedParams = Object.values(this.searchParams).filter(param => param !== '');
-        if (providedParams.length !== 1) {
-          this.error = 'Please provide exactly one search parameter (name, surname, or tuition).';
-          this.users = [];
-          this.searchPerformed = false;
-          return;
-        }
-  
-        try {
-          const token = localStorage.getItem('token');
-          const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          };
-          const response = await fetch('https://tame-red-cockatoo-tie.cyclic.app/users/buscarUsuario', {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(this.searchParams)
-          });
-  
-          if (response.status === 200) {
-            this.error = '';
-            this.users = await response.json();
-            this.searchPerformed = true;
-          } else if (response.status === 404) {
-            this.error = 'No users found.';
-            this.users = [];
-            this.searchPerformed = true;
-          } else {
-            this.error = 'An error occurred while searching for users.';
-            this.users = [];
-            this.searchPerformed = false;
-          }
-        } catch (error) {
-          console.error(error);
-          this.error = 'An error occurred while searching for users.';
-          this.users = [];
-          this.searchPerformed = false;
-        }
+      try {
+        const token = localStorage.getItem('token');
+        const headers = {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        };
+        const serverUrl = "https://tame-red-cockatoo-tie.cyclic.app/users/buscarUsuario";
+        const response = await axios.post(serverUrl, requestBody, { headers });
+        this.fetchedTuition = response.data.usuarios; // Asegúrate de que esta clave corresponda a la estructura de tu respuesta
+      } catch (error) {
+        console.error(error);
+        alert("Error al buscar usuario");
       }
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.$router.push('/login');
     }
-  };
-  </script>
-  
-  <style>
-  /* Add your CSS styles here */
-  .error {
-    color: red;
   }
-  </style>
+};
+</script>
+  
+<style>
+/* Add your CSS styles here */
+.error {
+  color: red;
+}
+</style>
