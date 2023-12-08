@@ -29,7 +29,7 @@ export default {
         return {
             deleteableLocation: {
                 _id: '',
-                ubicacion: '',
+
             }
         };
     },
@@ -42,7 +42,7 @@ export default {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/x-www-form-urlencoded'
                 };
-                const response = await axios.put(`https://tame-red-cockatoo-tie.cyclic.app/ulsa/deleteLocation/${this.deleteableLocation._id}`, { headers })
+                const response = await axios.delete(`https://tame-red-cockatoo-tie.cyclic.app/ulsa/deleteLocation/${this.deleteableLocation._id}`, { headers })
 
                 console.log(response);
                 alert("Estante eliminado con éxito!");
@@ -76,7 +76,7 @@ export default {
         if (locationDataString) {
             const locationData = JSON.parse(decodeURIComponent(locationDataString));
             this.deleteableLocation._id = locationData._id;
-            this.deleteableLocation.ubicacion = locationData.ubicacion; // Corregir el nombre de la propiedad a "ubicacion"
+            this.deleteableLocation.ubicacion = locationData.ubicacion;
         }
     },
 

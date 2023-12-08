@@ -47,6 +47,7 @@
             }" tag="button" class="btn btn-secondary">Eliminar Estante
             </router-link>
             <br>
+            <br>
             <router-link to="/dashboard" class="btn btn-secondary">Back</router-link>
           </b-card>
         </b-col>
