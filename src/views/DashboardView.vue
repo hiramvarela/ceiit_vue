@@ -30,6 +30,12 @@
                     </router-link>
 
                 </li>
+                <li>
+                    <router-link :to="{ name: 'LoanHistory' }">
+                        Loan History
+                    </router-link>
+
+                </li>
 
 
             </ul>

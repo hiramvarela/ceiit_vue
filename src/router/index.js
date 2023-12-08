@@ -46,6 +46,7 @@ const routes = [
   name: 'addUser',
   component: () => import('../views/AppSearchUserView.vue'),
 },
+
   {
     path: '/dashboard',
     name: 'dashboard',
@@ -64,7 +65,12 @@ const routes = [
       {
         path: 'loan',
         name: 'Loans',
-        component: () => import(/* webpackChunkName: "about" */ '../views/MakeLoanView.vue'),
+        component: () => import( '../views/MakeLoanView.vue'),
+      },
+      {
+        path: 'loanHistory',
+        name: 'LoanHistory',
+        component: () => import(/* webpackChunkName: "about" */ '../views/LoansView.vue'),
       },
     ]
   },

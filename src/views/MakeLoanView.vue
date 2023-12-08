@@ -21,17 +21,15 @@
                     <p>{{ result.descripcion }}</p>
                     <b-badge v-if="result.status" variant="success">Available</b-badge>
                     <b-badge v-else variant="danger">Unavailable</b-badge>
-                    <router-link 
-                      v-if="result.status"
-                      :to="{
-                        name: 'addUser',
-                        params: { id: result._id },
-                        query: { 
-                          name: result.name,
-                          descripcion: result.descripcion,
-                          imgUrl: result.imgUrl
-                        }
-                      }" tag="button" class="btn btn-secondary">Make Loan
+                    <router-link v-if="result.status" :to="{
+                      name: 'addUser',
+                      query: {
+                        _id: result._id, // Add _id here
+                        name: result.name,
+                        descripcion: result.descripcion,
+                        imgUrl: result.imgUrl
+                      }
+                    }" tag="button" class="btn btn-secondary">Make Loan
                     </router-link>
                   </div>
                 </div>

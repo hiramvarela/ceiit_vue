@@ -20,8 +20,8 @@
                                 <b-form-input v-model="editableObject.numserial" required></b-form-input>
                             </b-form-group>
                             <b-form-group label="Ubicación:">
-                                <b-form-select v-model="editableObject.ubicacion" :options="ubicaciones"></b-form-select>
-                            </b-form-group>
+                                <b-form-select id="ubi-select" v-model="ubi" :options="ubicaciones" required
+                                    @change="onLocationChange"></b-form-select> </b-form-group>
                             <b-form-group label="Descripción:">
                                 <b-form-textarea v-model="editableObject.descripcion" rows="3"></b-form-textarea>
                             </b-form-group>
@@ -51,10 +51,22 @@ export default {
                 cantidad: '',
                 imgUrl: '',
             },
-            ubicaciones: ['Estante 1', 'Estante 2', 'Estante 3', 'Estante 4', 'Estante 5']
+            ubicaciones: [],
+            ubi: null,
+            selectedLocationName: '',
+            selectedLocationId: null,
         };
     },
+    mounted() {
+        this.readLocation();
+
+    },
     methods: {
+        onLocationChange(value) {
+            const selectedLocation = this.ubicaciones.find(loc => loc.value === value);
+            this.selectedLocationId = selectedLocation ? selectedLocation.value : null;
+            this.selectedLocationName = selectedLocation ? selectedLocation.text : '';
+        },
         async editObject() {
             try {
                 const token = localStorage.getItem('token');
@@ -64,7 +76,7 @@ export default {
                 const requestBody = {
                     ob: this.editableObject.name,
                     num: this.editableObject.numserial,
-                    ubi: this.editableObject.ubicacion,
+                    ubi: this.ubi,
                     des: this.editableObject.descripcion,
                     cant: this.editableObject.cantidad,
                 };
@@ -75,6 +87,24 @@ export default {
             } catch (error) {
                 console.error("Error al actualizar el objeto:", error);
                 alert("Error al actualizar el objeto");
+            }
+        },
+
+        async readLocation() {
+            try {
+                const token = localStorage.getItem('token');
+                const headers = {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                };
+                const response = await axios.post('https://tame-red-cockatoo-tie.cyclic.app/ulsa/readLocation', {}, { headers });
+
+                // Transformar los datos para el b-form-select
+                this.ubicaciones = response.data.map(location => {
+                    return { text: location.ubicacion, value: location._id }; // Asegúrate de que el value sea el _id, no la ubicación
+                });
+            } catch (error) {
+                console.error('Error al obtener todos los objetos:', error);
             }
         },
         logout() {
