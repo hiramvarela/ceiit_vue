@@ -38,14 +38,14 @@
               query: { locationData: JSON.stringify({ _id: selectedLocationId, ubicacion: selectedLocationName }) }
             }" tag="button" class="btn btn-secondary">Editar Estante
             </router-link>
-
-
-
-
-
-
-
-
+            <br>
+            <br>
+            <router-link :to="{
+              name: 'deleteLocation',
+              params: { id: selectedLocationId },
+              query: { locationData: JSON.stringify({ _id: selectedLocationId, ubicacion: selectedLocationName }) }
+            }" tag="button" class="btn btn-secondary">Eliminar Estante
+            </router-link>
             <br>
             <router-link to="/dashboard" class="btn btn-secondary">Back</router-link>
           </b-card>

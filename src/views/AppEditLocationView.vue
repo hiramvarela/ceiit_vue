@@ -40,7 +40,8 @@ export default {
       try {
         const token = localStorage.getItem('token');
         const headers = {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
         };
         const response = await axios.put(`https://tame-red-cockatoo-tie.cyclic.app/ulsa/updateLocation/${this.editableLocation._id}`, {
           ubicacion: this.editableLocation.ubicacion,
@@ -53,6 +54,7 @@ export default {
         alert("Error al actualizar el estante");
       }
     },
+    
 
 
     logout() {
