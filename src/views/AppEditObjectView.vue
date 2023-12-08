@@ -74,11 +74,13 @@ export default {
                     Authorization: `Bearer ${token}`,
                 };
                 const requestBody = {
+                    id: this.editableObject._id, // Asegúrate de que el objeto editable tenga un campo _id
                     ob: this.editableObject.name,
                     num: this.editableObject.numserial,
                     ubi: this.ubi,
                     des: this.editableObject.descripcion,
                     cant: this.editableObject.cantidad,
+                    // Incluye otros campos si es necesario, como imgUrl, status, etc.
                 };
                 const response = await axios.put('https://tame-red-cockatoo-tie.cyclic.app/ulsa/updateObject', requestBody, { headers });
                 console.log(response);

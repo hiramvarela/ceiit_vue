@@ -1,36 +1,37 @@
 <template>
-    <div>
-      <div class="menu-container">
-        <b-nav>
-          <b-nav-item-dropdown text="Perfil" right>
-            <b-dropdown-item @click="logout">Cerrar Sesión</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-nav>
-      </div>
-      <b-container>
-        <b-row>
-          <b-col></b-col>
-          <b-col cols="6">
-            <b-card title="Loan History">
-              <b-form @submit.prevent="addLocation">
-                <b-form-group label="Matricula:">
-                  <b-form-input v-model="ubi" placeholder="Enter tuition" required></b-form-input>
-                </b-form-group>
-  
-  
-  
-                <b-button type="submit" variant="primary">Buscar</b-button>
-              </b-form>
-              <router-link :to="{ name: 'Estantes' }" class="btn btn-secondary">Back</router-link>
-            </b-card>
-          </b-col>
-          <b-col></b-col>
-        </b-row>
-      </b-container>
+  <div>
+    <div class="menu-container">
+      <b-nav>
+        <b-nav-item-dropdown text="Perfil" right>
+          <b-dropdown-item @click="logout">Cerrar Sesión</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-nav>
     </div>
-  </template>
+    <b-container>
+      <b-row>
+        <b-col></b-col>
+        <b-col cols="6">
+          <b-card title="Loan History">
+            <b-form @submit.prevent="addLocation">
+              <b-form-group label="Matricula:">
+                <b-form-input v-model="tuition" placeholder="Enter tuition" required></b-form-input>
+              </b-form-group>
+
+
+
+              <b-button type="submit" variant="primary">Buscar</b-button>
+            </b-form>
+            <router-link :to="{ name: 'dashboard' }" class="btn btn-secondary">Back</router-link>
+          </b-card>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+    </b-container>
+  </div>
+</template>
 
 <script>
+/*
 import axios from 'axios';
 
 export default {
@@ -38,32 +39,30 @@ export default {
   data() {
     return {
 
-      ubi: ''
+      tuition: ''
     }
   },
   methods: {
     goBack() {
-      this.$router.go(-1); // Go back one step in the history
+      this.$router.go(-1);
     },
 
-    async addLocation(event) {
-      event.preventDefault();
+    async searchUsers() {
       const requestBody = {
-        ubi: this.ubi
-
-      }
+        tuition: this.tuition
+      };
       try {
         const token = localStorage.getItem('token');
         const headers = {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         };
-        const serverUrl = "https://tame-red-cockatoo-tie.cyclic.app/ulsa/addLocation";
+        const serverUrl = "https://tame-red-cockatoo-tie.cyclic.app/ulsa/loanReadObject";
         const response = await axios.post(serverUrl, requestBody, { headers });
-        console.log(response)
-        alert("Estante agregado!")
+
       } catch (error) {
-        console.log(error)
-        alert("Error al agregar el estante")
+        console.error(error);
+        alert("Error al buscar usuario");
       }
     },
     logout() {
@@ -71,8 +70,9 @@ export default {
       this.$router.push('/login');
     }
   }
-}
+}*/
 </script>
+
 
 <style>
 #app {
