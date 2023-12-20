@@ -1,4 +1,4 @@
-# my-fisrt-client
+<h1>InventoryMgr Admin</h1>
 
 ## Project setup
 ```
