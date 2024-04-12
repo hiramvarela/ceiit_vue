@@ -19,6 +19,7 @@
                   <div class="media-body">
                     <h5 class="mt-0">{{ result.name }}</h5>
                     <p>{{ result.descripcion }}</p>
+                    <p>{{ result.ubicacion}}</p>
                     <b-badge v-if="result.status" variant="success">Available</b-badge>
                     <b-badge v-else variant="danger">Unavailable</b-badge>
                     <router-link v-if="result.status" :to="{
