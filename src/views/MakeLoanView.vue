@@ -18,7 +18,7 @@
                   <img :src="result.imgUrl" class="mr-3" alt="Object Image" style="width: 60px; height: 60px;">
                   <div class="media-body">
                     <h5 class="mt-0">{{ result.name }}</h5>
-                    <p>{{ result.descripcion }}</p>
+                    
                     <p>{{ result.ubicacion}}</p>
                     <b-badge v-if="result.status" variant="success">Available</b-badge>
                     <b-badge v-else variant="danger">Unavailable</b-badge>
